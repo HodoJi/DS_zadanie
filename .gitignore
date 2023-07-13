@@ -1,3 +1,5 @@
+/__IGNORED
+/__TEMPLATE
 /.phpunit.cache
 /node_modules
 /public/build

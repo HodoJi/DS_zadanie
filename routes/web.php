@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Home | Login
+Route::name('home')->get('/', function() {
+    if (!Auth::check()) // not logged in
+        return view('login');
+    else // logged in
+        return view('home');
 });
