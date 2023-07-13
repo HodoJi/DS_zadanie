@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,22 +12,30 @@ class AuthController extends Controller
 {
     public function doLogin(Request $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required']
-        ]);
+        if (!$request->isMethod('post'))
+        {
+            return redirect(route('login'));
+        }
 
-        if (Auth::attempt($credentials))
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+
+        try
         {
-            $request->session()->regenerate();
-            return redirect()->intended(route('home'));
+            if (Auth::attempt($credentials))
+            {
+                $request->session()->regenerate();
+                return redirect()->intended(route('home'));
+            }
         }
-        else
+        catch (QueryException)
         {
-            return back()->withErrors([
-                'email' => 'Login failed, try again!'
-            ])->onlyInput('email');
+            return back()->with('login_fail', 'Login failed, try again.');
         }
+
+        return back()->with('login_fail', 'Login failed, try again.');
     }
 
     public function doLogout(Request $request): RedirectResponse
@@ -34,6 +43,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('home');
+        return redirect(route('login'));
     }
 }

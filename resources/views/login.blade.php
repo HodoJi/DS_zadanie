@@ -63,24 +63,24 @@
                                 <div class="text-center mt-2">
                                     <h5 class="text-primary">Welcome Back !</h5>
                                     <p class="text-muted">Log in to continue</p>
+                                    @if( session('login_fail') )
+                                        <div class="alert alert-danger">{{ session('login_fail') }}</div>
+                                    @endif
                                 </div>
                                 <div class="p-2 mt-4">
 
-                                    @if($errors->any())
-                                        <span class="alert alert-danger">{{ $errors->first() }}</span>
-                                    @endif
-
-                                    <form method="post" action="/api/login">
+                                    <form method="post" action="{{ route('api/login') }}">
+                                        @csrf
 
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="text" class="form-control" id="email" placeholder="Enter email">
+                                            <input type="text" class="form-control" id="email" name="email" placeholder="Enter email">
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label" for="password-input">Password</label>
+                                            <label class="form-label" for="password">Password</label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
-                                                <input type="password" class="form-control pe-5 password-input" placeholder="Enter password" id="password-input">
+                                                <input type="password" class="form-control pe-5 password-input" placeholder="Enter password" id="password" name="password">
                                                 <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                             </div>
                                         </div>

@@ -14,10 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Home | Login
+// Home:
 Route::name('home')->get('/', function() {
     if (!Auth::check()) // not logged in
-        return view('login');
+        return redirect(route('login'));
     else // logged in
         return view('home');
+});
+
+// Login:
+Route::name('login')->get('/login', function() {
+    if (Auth::check())
+        return redirect(route('home'));
+    else
+        return view('login');
 });

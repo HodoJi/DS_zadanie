@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Login:
-Route::post('login', [\App\Http\Controllers\API\AuthController::class, 'doLogin']);
+Route::name("api/login")->match(['GET', 'POST'], 'login', [\App\Http\Controllers\API\AuthController::class, 'doLogin']);
 
 // Logout:
-Route::post('logout', [\App\Http\Controllers\API\AuthController::class, 'doLogout']);
+Route::name('api/logout')->post('logout', [\App\Http\Controllers\API\AuthController::class, 'doLogout'])->middleware('auth:sanctum');
