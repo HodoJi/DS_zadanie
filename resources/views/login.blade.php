@@ -63,8 +63,8 @@
                                 <div class="text-center mt-2">
                                     <h5 class="text-primary">Welcome Back !</h5>
                                     <p class="text-muted">Log in to continue</p>
-                                    @if( session('login_fail') )
-                                        <div class="alert alert-danger">{{ session('login_fail') }}</div>
+                                    @if( isset($login_fail_msg) )
+                                        <div class="alert alert-danger">{{ $login_fail_msg }}</div>
                                     @endif
                                 </div>
                                 <div class="p-2 mt-4">

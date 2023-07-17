@@ -7,10 +7,11 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class AuthController extends Controller
 {
-    public function doLogin(Request $request): RedirectResponse
+    public function doLogin(Request $request): RedirectResponse|View
     {
         if (!$request->isMethod('post'))
         {
@@ -22,6 +23,10 @@ class AuthController extends Controller
             'password' => $request->password
         ];
 
+        $loginView = 'login';
+        $failMsgVar = "login_fail_msg";
+        $failMsg = "Login failed, try again.";
+
         try
         {
             if (Auth::attempt($credentials))
@@ -32,10 +37,10 @@ class AuthController extends Controller
         }
         catch (QueryException)
         {
-            return back()->with('login_fail', 'Login failed, try again.');
+            return view($loginView, [$failMsgVar => $failMsg]);
         }
 
-        return back()->with('login_fail', 'Login failed, try again.');
+        return view($loginView, [$failMsgVar => $failMsg]);
     }
 
     public function doLogout(Request $request): RedirectResponse
