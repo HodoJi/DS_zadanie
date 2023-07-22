@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Home (Dashboard):
+Route::name('home')->get('/', function() {
+    if (!Auth::check()) // not logged in
+    {
+        return redirect(route('login'));
+    }
+    else // logged in
+    {
+        return view('home');
+    }
 });
+
+// Login:
+Route::name('login')->get('/login', function() {
+    if (Auth::check())
+    {
+        return redirect(route('home'));
+    }
+    else
+    {
+        return view('login');
+    }
+});
+Route::name('login.post')->post('/login', [\App\Http\Controllers\AuthController::class, 'doLogin']);
+
+// Logout:
+Route::name('logout')->match(['get', 'post'], '/logout', [\App\Http\Controllers\AuthController::class, 'doLogout'])->middleware('auth:sanctum');
