@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -45,7 +44,6 @@ class AuthController extends Controller
 
     public function doLogout(Request $request): RedirectResponse
     {
-        Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect(route('login'));
