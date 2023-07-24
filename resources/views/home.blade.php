@@ -1,14 +1,7 @@
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
 
-<head>
-
-    @include('includes/head-content')
-    <title>Home | Admin & Dashboard</title>
-
-</head>
-
-<body>
+@include('includes/head', ['page_title' => "Home | Admin & Dashboard"])
 
 <!-- Begin page -->
 <div id="layout-wrapper">
