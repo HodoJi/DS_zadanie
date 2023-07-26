@@ -99,7 +99,7 @@
 
 <script type="module">
     let options = {
-            series:[72,186], {{-- get values from DB as [num of categories,num of products] --}}
+            series:[72,186], {{-- todo: get values from DB as [num of categories,num of products] --}}
             labels:[
                 "Categories",
                 "Products"
