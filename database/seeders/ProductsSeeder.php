@@ -36,13 +36,13 @@ class ProductsSeeder extends Seeder
             if(!$category)
             {
                 $newProduct = new Product();
-                $newProduct->id = $product_id;
-                $newProduct->name = $productData['name'];
-                $newProduct->desc = $productData['desc'];
-                $newProduct->cost = $productData['cost'];
+                $newProduct['id'] = $product_id;
+                $newProduct['name'] = $productData['name'];
+                $newProduct['desc'] = $productData['desc'];
+                $newProduct['cost'] = $productData['cost'];
                 if (isset($productData['category_id']))
                 {
-                    $newProduct->category_id = $productData['category_id'];
+                    $newProduct['category_id'] = $productData['category_id'];
                 }
                 $newProduct->save();
             }

@@ -194,26 +194,26 @@ $user = \Illuminate\Support\Facades\Auth::user();
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="{{ route('home') }}" role="button" aria-expanded="false">
-                        <i class="ri-dashboard-2-line"></i> <span @if( Request::url() === route('home') ) class="link-warning" @endif > Dashboard Home </span>
+                        <i class="ri-dashboard-2-line"></i> <span @if( Request::url() === route('home') ) class="link-warning" @endif> Dashboard Home </span>
                     </a>
-                </li><!-- end Dashboard Menu -->
+                </li><!-- end navbar item -->
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarCategoriesAndProducts" role="button" aria-expanded="false" aria-controls="sidebarCategoriesAndProducts">
-                        <i class="ri-apps-2-line"></i> <span>Categories &amp; Products</span>
+                        <i class="ri-apps-2-line"></i> <span @if( in_array(Request::url(), array(route('categories'), route('products'))) ) class="link-warning" @endif>Categories &amp; Products</span>
                     </a>
                     <div class="menu-dropdown" id="sidebarCategoriesAndProducts">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{-- route('categories') --}}" class="nav-link">Categories</a>
+                                <a href="{{ route('categories') }}" class="nav-link @if( Request::url() === route('categories') ) link-warning @endif">Categories</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{-- route('products') --}}" class="nav-link">Products</a>
+                                <a href="{{ route('products') }}" class="nav-link @if( Request::url() === route('products') ) link-warning @endif">Products</a>
                             </li>
                         </ul>
                     </div>
-                </li><!-- end Dashboard Menu -->
+                </li><!-- end navbar item -->
 
-            </ul>
+            </ul><!-- end Dashboard Menu -->
         </div>
         <!-- Sidebar -->
     </div>

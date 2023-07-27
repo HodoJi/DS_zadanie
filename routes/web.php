@@ -41,3 +41,17 @@ Route::name('login.post')->post('/login', [\App\Http\Controllers\AuthController:
 
 // Logout:
 Route::name('logout')->match(['get', 'post'], '/logout', [\App\Http\Controllers\AuthController::class, 'doLogout'])->middleware('auth:sanctum');
+
+// Categories:
+Route::group(["middleware" => 'auth:sanctum'], function()
+{
+    Route::name('categories')->get("/categories", function()
+    {
+        return view('categories');
+    });
+
+    Route::name('products')->get("/products", function()
+    {
+       return view('products');
+    });
+});

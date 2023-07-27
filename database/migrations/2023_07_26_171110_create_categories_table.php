@@ -6,17 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    private string $table = "categories";
+
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string("name");
-            $table->string("slug")->unique();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable($this->table))
+        {
+            Schema::create($this->table, function (Blueprint $table) {
+                $table->id();
+                $table->string("name");
+                $table->string("slug")->unique();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -24,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists($this->table);
     }
 };

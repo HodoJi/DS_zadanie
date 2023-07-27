@@ -17,12 +17,10 @@ class CategoriesSeeder extends Seeder
     {
         $categories = [
             1 => [
-                'name' => 'Malé autá',
-                'slug' => 'male-auta-1'
+                'name' => 'Malé autá'
             ],
             2 => [
-                'name' => 'Veľké autá',
-                'slug' => 'velke-auta-1'
+                'name' => 'Veľké autá'
             ]
         ];
 
@@ -37,9 +35,9 @@ class CategoriesSeeder extends Seeder
             if(!$category)
             {
                 $newCategory = new Category();
-                $newCategory->id = $category_id;
-                $newCategory->name = $catData['name'];
-                $newCategory->slug = $newSlug . "-" . $slug_id;
+                $newCategory['id'] = $category_id;
+                $newCategory['name'] = $catData['name'];
+                $newCategory['slug'] = $newSlug . "-" . $slug_id;
                 $newCategory->save();
             }
         }
