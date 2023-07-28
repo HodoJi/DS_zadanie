@@ -39,19 +39,19 @@ Route::name('login')->get('/login', function() {
 });
 Route::name('login.post')->post('/login', [\App\Http\Controllers\AuthController::class, 'doLogin']);
 
-// Logout:
-Route::name('logout')->match(['get', 'post'], '/logout', [\App\Http\Controllers\AuthController::class, 'doLogout'])->middleware('auth:sanctum');
-
-// Categories:
+// Only for logged in:
 Route::group(["middleware" => 'auth:sanctum'], function()
 {
-    Route::name('categories')->get("/categories", function()
-    {
-        return view('categories');
-    });
+    // Logout:
+    Route::name('logout')->match(['get', 'post'], '/logout', [\App\Http\Controllers\AuthController::class, 'doLogout']);
 
-    Route::name('products')->get("/products", function()
-    {
-       return view('products');
-    });
+    // Categories:
+    Route::name('categories')->get("/categories", [\App\Http\Controllers\API\CategoryController::class, "getCategoriesForView"]);
+    Route::name('edit-category')->get("/edit-category/{identifier}", [\App\Http\Controllers\API\CategoryController::class, "editCategory"]);
+    Route::name("delete-category")->match(['delete', 'get'], "/delete-category", [\App\Http\Controllers\API\CategoryController::class, "deleteCategory"]);
+
+    // Products:
+    Route::name('products')->get("/products", [\App\Http\Controllers\API\ProductController::class, "getProductsForView"]);
+    Route::name('edit-product')->get("/edit-product/{identifier}", [\App\Http\Controllers\API\ProductController::class, "editProduct"]);
+    Route::name("delete-product")->match(['delete', 'get'], "/delete-product", [\App\Http\Controllers\API\ProductController::class, "deleteProduct"]);
 });

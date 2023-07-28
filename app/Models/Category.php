@@ -23,4 +23,9 @@ class Category extends Model
      * Table associated with this model.
      */
     protected $table = "categories";
+
+    public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Product::class, "category_id");
+    }
 }
