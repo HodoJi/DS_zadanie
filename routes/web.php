@@ -54,4 +54,5 @@ Route::group(["middleware" => 'auth:sanctum'], function()
     Route::name('products')->get("/products", [\App\Http\Controllers\API\ProductController::class, "getProductsForView"]);
     Route::name('edit-product')->get("/edit-product/{identifier}", [\App\Http\Controllers\API\ProductController::class, "editProduct"]);
     Route::name("delete-product")->match(['delete', 'get'], "/delete-product", [\App\Http\Controllers\API\ProductController::class, "deleteProduct"]);
+    Route::name("products-in-category")->get("/categories/{category_id}/products", [\App\Http\Controllers\API\ProductController::class, "getProductsForViewByCategoryId"]);
 });

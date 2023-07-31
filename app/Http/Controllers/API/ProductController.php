@@ -8,7 +8,6 @@ use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ProductController extends Controller
@@ -37,6 +36,24 @@ class ProductController extends Controller
             }
         }
         return view('products', ["products" => $products]);
+    }
+
+    /**
+     * Returns all products for view by defined category_id.
+     * @param int|string $category_id
+     * @return View|RedirectResponse
+     */
+    public function getProductsForViewByCategoryId(int|string $category_id): View|RedirectResponse
+    {
+        if(is_numeric($category_id))
+        {
+            $products = Category::find($category_id)->products()->get();
+            return view('products', ["products" => $products]);
+        }
+        else
+        {
+            return redirect(route("products"));
+        }
     }
 
     /**

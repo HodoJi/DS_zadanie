@@ -61,7 +61,7 @@
                                                     <i class="ri-more-fill align-middle"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a class="dropdown-item"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View products in category</a></li>
+                                                    <li><a href="{{ route("products-in-category", ["category_id" => $category['id']]) }}" class="dropdown-item"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View products in category</a></li>
                                                     <li><a href="{{ route('edit-category', ["identifier" => $category['id']]) }}" class="dropdown-item edit-item-btn"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit category</a></li>
                                                     <li>
                                                         <form action="{{ route('delete-category') }}" method="POST">
