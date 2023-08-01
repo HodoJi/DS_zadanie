@@ -56,7 +56,7 @@ $user = \Illuminate\Support\Facades\Auth::user();
 
                 <div class="dropdown ms-1 topbar-head-dropdown header-item">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img id="header-lang-img" src="{{ asset('assets/images/flags/us.svg') }}" alt="Header Language" height="20" class="rounded">
+                        <img src="{{ asset('assets/images/flags/us.svg') }}" alt="Header Language" height="20" class="rounded">
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
 
@@ -191,7 +191,7 @@ $user = \Illuminate\Support\Facades\Auth::user();
             <div id="two-column-menu">
             </div>
             <ul class="navbar-nav" id="navbar-nav">
-                <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                <li class="menu-title"><span data-key="t-menu">Menu</span></li><!-- MENU -->
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="{{ route('home') }}" role="button" aria-expanded="false">
                         <i class="ri-dashboard-2-line"></i> <span @if( Request::url() === route('home') ) class="link-warning" @endif> Dashboard Home </span>

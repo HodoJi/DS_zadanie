@@ -13,15 +13,6 @@ use Illuminate\View\View;
 class ProductController extends Controller
 {
     /**
-     * Returns all products.
-     * @return JsonResponse
-     */
-    public function getProducts(): JsonResponse
-    {
-        return Response()->json(Product::select("id", "name", "desc", "cost", "category_id")->get());
-    }
-
-    /**
      * Returns all products for view.
      * @return View
      */
@@ -39,7 +30,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Returns all products for view by defined category_id.
+     * Returns all products for view by defined $category_id.
      * @param int|string $category_id
      * @return View|RedirectResponse
      */
@@ -47,23 +38,17 @@ class ProductController extends Controller
     {
         if(is_numeric($category_id))
         {
-            $products = Category::find($category_id)->products()->get();
-            return view('products', ["products" => $products]);
+            $category = Category::select("id", "name")->find($category_id);
+            $products = $category->products()->get();
+            return view('products', [
+                "products" => $products,
+                "products_category_name" => $category['name']
+            ]);
         }
         else
         {
             return redirect(route("products"));
         }
-    }
-
-    /**
-     * Returns product by $id param.
-     * @param int $id
-     * @return JsonResponse
-     */
-    public function getProductById(int $id): JsonResponse
-    {
-        return Response()->json(Product::select("id", "name", "desc", "cost", "category_id")->find($id));
     }
 
     /**
@@ -73,7 +58,7 @@ class ProductController extends Controller
      */
     public function editProduct(int|string $identifier): View
     {
-        $productToEdit = (is_numeric($identifier)) ? Product::select("id", "name", "desc", "cost", "category_id")->find(id:$identifier) : NULL;
+        $productToEdit = (is_numeric($identifier)) ? Product::select("id", "name", "desc", "cost", "category_id", "created_at", "updated_at")->find(id:$identifier) : null;
 
         if (isset($productToEdit))
         {
@@ -96,17 +81,60 @@ class ProductController extends Controller
         {
             $identifier = $req['product_id'];
             $productToDelete = Product::select("id", "name", "cost")->find(id: $identifier);
-            $result = (isset($productToDelete)) ? $productToDelete->delete() : NULL;
+            $result = (isset($productToDelete)) ? $productToDelete->delete() : null;
             if ($result)
             {
-                return redirect()->route('products')
-                    ->with("product_deletion_msg", "Product with id '#$productToDelete->id', name '$productToDelete->name' and cost '$productToDelete->cost"."€' was deleted successfully.")
-                    ->with("product_deletion_result", "success");
+                return redirect()->route('products')->with([
+                        "product_deletion_msg" => "Product with id '#$productToDelete->id', name '$productToDelete->name' and cost '$productToDelete->cost"."€' was deleted successfully.",
+                        "product_deletion_result" => "success"
+                    ]);
             }
-            return redirect()->route('products')
-                ->with("product_deletion_msg", "Product with id '#$identifier' could not be deleted properly.")
-                ->with("product_deletion_result", "danger");
+            return redirect()->route('products')->with([
+                    "product_deletion_msg" => "Product with id '#$identifier' could not be deleted properly.",
+                    "product_deletion_result" => "danger"
+                ]);
         }
         return redirect()->route('products');
+    }
+
+    // <==========================================================================================================> //
+    // <==============================================[↓ API PART ↓]==============================================> //
+    // <==========================================================================================================> //
+
+    /**
+     * API: Returns all products.
+     * @return JsonResponse
+     */
+    public function getProducts(): JsonResponse
+    {
+        return Response()->json(Product::select("id", "name", "desc", "cost", "category_id", "created_at", "updated_at")->get());
+    }
+
+    /**
+     * API: Returns all products in category defined by $category_identifier (id|slug).
+     * @param int|string $category_identifier
+     * @return JsonResponse
+     */
+    public function getProductsByCategoryIdOrSlug(int|string $category_identifier): JsonResponse
+    {
+        if(is_numeric($category_identifier))
+        {
+            $products = Category::find($category_identifier)->products()->get();
+        }
+        else
+        {
+            $products = Product::select("products.id AS id", "products.name AS name", "products.desc AS desc", "products.cost AS cost", "products.category_id AS category_id", "products.created_at AS created_at", "products.updated_at AS updated_at")->leftJoin("categories", "categories.id", "=", "products.category_id")->where("categories.slug", "like", $category_identifier)->get()->toArray();
+        }
+        return Response()->json($products);
+    }
+
+    /**
+     * API: Returns product by $id param.
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getProductById(int $id): JsonResponse
+    {
+        return Response()->json(Product::select("id", "name", "desc", "cost", "category_id", "created_at", "updated_at")->find($id));
     }
 }

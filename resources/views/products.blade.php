@@ -36,7 +36,7 @@
                     <div class="col-xxl-12 col-lg-12">
                         <div class="card card-height-100">
                             <div class="card-header align-items-center d-flex">
-                                <h4 class="card-title mb-0 flex-grow-1">Products</h4>
+                                <h4 class="card-title mb-0 flex-grow-1">Products @if( isset($products_category_name) )in category: {{ $products_category_name }}@endif</h4>
                             </div>
                             @if( session("product_deletion_msg") )<div class="align-items-center d-flex alert alert-{{ session("product_deletion_result") }}">{{ session("product_deletion_msg") }}</div>@endif<!-- end card header -->
 
@@ -50,7 +50,7 @@
                                         <th data-ordering="false">Name</th>
                                         <th data-ordering="false">Description</th>
                                         <th data-ordering="false">Cost</th>
-                                        <th data-ordering="false">Category</th>
+                                        @if(!isset($products_category_name))<th data-ordering="false">Category</th>@endif
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -61,7 +61,7 @@
                                             <td>{{ $product['name'] }}</td>
                                             <td>{{ $product['desc'] }}</td>
                                             <td>{{ $product['cost'] }}€</td>
-                                            <td>{{ $product['category_name'] }}</td>
+                                            @if(!isset($products_category_name))<td>{{ $product['category_name'] }}</td>@endif
                                             <td>
                                                 <div class="dropdown d-inline-block">
                                                     <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
@@ -71,7 +71,8 @@
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li><a class="dropdown-item"><i
                                                                     class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                                View product</a></li>
+                                                                View product</a>
+                                                        </li>
                                                         <li>
                                                             <a href="{{ route('edit-product', ["identifier" => $product['id']]) }}" class="dropdown-item edit-item-btn">
                                                                 <i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit product
@@ -84,7 +85,7 @@
                                                                 <input type="hidden" name="product_id" value="{{ $product['id'] }}">
                                                                 <button class="dropdown-item remove-item-btn" onclick="return confirm('Please confirm deletion.');" type="submit">
                                                                     <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                                    Delete product
+                                                                    <span class="text-danger">Delete product</span>
                                                                 </button>
                                                             </form>
                                                         </li>

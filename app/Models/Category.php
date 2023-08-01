@@ -24,6 +24,7 @@ class Category extends Model
      */
     protected $table = "categories";
 
+    // Relations:
     public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Product::class, "category_id");

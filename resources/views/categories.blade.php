@@ -38,6 +38,7 @@
                                 <h4 class="card-title mb-0 flex-grow-1">Categories</h4>
                             </div>
                             @if( session("category_deletion_msg") )<div class="align-items-center d-flex alert alert-{{ session("category_deletion_result") }}">{{ session("category_deletion_msg") }}</div>@endif<!-- end card header -->
+                            @if( session("category_products_removal_msg_show") )<div class="align-items-center d-flex alert alert-{{ session("category_deletion_result") }}">{{ session("category_products_removal_msg") }}</div>@endif<!-- end card header -->
 
                             <div class="card-body">
                                 <table id="categories_table" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
@@ -61,15 +62,30 @@
                                                     <i class="ri-more-fill align-middle"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a href="{{ route("products-in-category", ["category_id" => $category['id']]) }}" class="dropdown-item"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View products in category</a></li>
-                                                    <li><a href="{{ route('edit-category', ["identifier" => $category['id']]) }}" class="dropdown-item edit-item-btn"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit category</a></li>
+                                                    <li>
+                                                        <a href="{{ route("products-in-category", ["category_id" => $category['id']]) }}" class="dropdown-item"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View products in category</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('edit-category', ["identifier" => $category['id']]) }}" class="dropdown-item edit-item-btn"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit category</a>
+                                                    </li>
                                                     <li>
                                                         <form action="{{ route('delete-category') }}" method="POST">
                                                             @method('delete')
                                                             @csrf
                                                             <input type="hidden" name="category_id" value="{{ $category['id'] }}">
                                                             <button class="dropdown-item remove-item-btn" onclick="return confirm('Please confirm deletion.');" type="submit">
-                                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete category with all products
+                                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> <span class="text-danger">Delete category</span>
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <form action="{{ route('delete-category') }}" method="POST">
+                                                            @method('delete')
+                                                            @csrf
+                                                            <input type="hidden" name="category_id" value="{{ $category['id'] }}">
+                                                            <input type="hidden" name="remove_category_products" value="true">
+                                                            <button class="dropdown-item remove-item-btn" onclick="return confirm('Please confirm deletion.');" type="submit">
+                                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> <span class="text-danger">Delete category with all its products</span>
                                                             </button>
                                                         </form>
                                                     </li>

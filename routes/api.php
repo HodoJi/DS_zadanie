@@ -19,8 +19,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::name('api/')->group(function() {
+    // Categories:
     Route::name('getCategories')->get('get-categories', [\App\Http\Controllers\API\CategoryController::class, "getCategories"]);
-    Route::name('getCategory')->get('get-category/{id}', [\App\Http\Controllers\API\CategoryController::class, "getCategoryByIdOrSlug"]);
+    Route::name('getCategory')->get('get-category/{category_identifier}', [\App\Http\Controllers\API\CategoryController::class, "getCategoryByIdOrSlug"]);
+    // Products:
     Route::name('getProducts')->get('get-products', [\App\Http\Controllers\API\ProductController::class, "getProducts"]);
     Route::name('getProduct')->get('get-product/{id}', [\App\Http\Controllers\API\ProductController::class, "getProductById"]);
+    Route::name('getProductsByCategory')->get('get-category/{category_identifier}/products', [\App\Http\Controllers\API\ProductController::class, "getProductsByCategoryIdOrSlug"]);
 });
