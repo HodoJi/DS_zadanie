@@ -47,12 +47,16 @@ Route::group(["middleware" => 'auth:sanctum'], function()
 
     // Categories:
     Route::name('categories')->get("/categories", [\App\Http\Controllers\API\CategoryController::class, "getCategoriesForView"]);
-    Route::name('edit-category')->get("/edit-category/{identifier}", [\App\Http\Controllers\API\CategoryController::class, "editCategory"]);
     Route::name("delete-category")->match(['delete', 'get'], "/delete-category", [\App\Http\Controllers\API\CategoryController::class, "deleteCategory"]);
+    // Categories - Edit:
+    Route::name('edit-category')->get("/edit-category/{identifier}", [\App\Http\Controllers\CategoryEditController::class, "editCategory"]);
+    Route::name('edit-category-save')->post("/edit-category", [\App\Http\Controllers\CategoryEditController::class, "editCategorySave"]);
 
     // Products:
     Route::name('products')->get("/products", [\App\Http\Controllers\API\ProductController::class, "getProductsForView"]);
-    Route::name('edit-product')->get("/edit-product/{identifier}", [\App\Http\Controllers\API\ProductController::class, "editProduct"]);
     Route::name("delete-product")->match(['delete', 'get'], "/delete-product", [\App\Http\Controllers\API\ProductController::class, "deleteProduct"]);
     Route::name("products-in-category")->get("/categories/{category_id}/products", [\App\Http\Controllers\API\ProductController::class, "getProductsForViewByCategoryId"]);
+    // Products - Edit:
+    Route::name('edit-product')->get("/edit-product/{identifier}", [\App\Http\Controllers\ProductEditController::class, "editProduct"]);
+    Route::name('edit-product-save')->post("/edit-product", [\App\Http\Controllers\ProductEditController::class, "editProductSave"]);
 });
