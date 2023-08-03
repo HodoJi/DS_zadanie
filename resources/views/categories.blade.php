@@ -36,6 +36,7 @@
                         <div class="card card-height-100">
                             <div class="card-header align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">Categories</h4>
+                                <a class="btn btn-success" href="{{ route("add-category") }}">Add Category</a>
                             </div>
                             @if( session("category_deletion_msg") )<div class="align-items-center d-flex alert alert-{{ session("category_deletion_result") }}">{{ session("category_deletion_msg") }}</div>@endif<!-- end card header -->
                             @if( session("category_products_removal_msg_show") )<div class="align-items-center d-flex alert alert-{{ session("category_deletion_result") }}">{{ session("category_products_removal_msg") }}</div>@endif<!-- end card header -->
@@ -74,7 +75,7 @@
                                                             @csrf
                                                             <input type="hidden" name="category_id" value="{{ $category['id'] }}">
                                                             <button class="dropdown-item remove-item-btn" onclick="return confirm('Please confirm deletion.');" type="submit">
-                                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> <span class="text-danger">Delete category</span>
+                                                                <i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i> <span class="text-danger">Delete category</span>
                                                             </button>
                                                         </form>
                                                     </li>
@@ -85,7 +86,7 @@
                                                             <input type="hidden" name="category_id" value="{{ $category['id'] }}">
                                                             <input type="hidden" name="remove_category_products" value="true">
                                                             <button class="dropdown-item remove-item-btn" onclick="return confirm('Please confirm deletion.');" type="submit">
-                                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> <span class="text-danger">Delete category with all its products</span>
+                                                                <i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i> <span class="text-danger">Delete category with all its products</span>
                                                             </button>
                                                         </form>
                                                     </li>

@@ -37,6 +37,7 @@
                         <div class="card card-height-100">
                             <div class="card-header align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">Products @if( isset($products_category_name) )in category: {{ $products_category_name }}@endif</h4>
+                                <a class="btn btn-success" href="{{ route("add-product") }}">Add Product</a>
                             </div>
                             @if( session("product_deletion_msg") )<div class="align-items-center d-flex alert alert-{{ session("product_deletion_result") }}">{{ session("product_deletion_msg") }}</div>@endif<!-- end card header -->
 
@@ -84,7 +85,7 @@
                                                                 @csrf
                                                                 <input type="hidden" name="product_id" value="{{ $product['id'] }}">
                                                                 <button class="dropdown-item remove-item-btn" onclick="return confirm('Please confirm deletion.');" type="submit">
-                                                                    <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                                    <i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i>
                                                                     <span class="text-danger">Delete product</span>
                                                                 </button>
                                                             </form>

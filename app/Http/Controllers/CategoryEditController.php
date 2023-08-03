@@ -29,10 +29,7 @@ class CategoryEditController extends Controller
         }
         else
         {
-            return redirect(route("categories"))->with([
-                "category_deletion_msg" => "Specified category does not exist or cannot be edited.",
-                "category_deletion_result" => "danger"
-            ]);
+            return $this->editCategoryNotSpecified();
         }
     }
 
@@ -43,28 +40,46 @@ class CategoryEditController extends Controller
      */
     public function editCategorySave(Request $req): View
     {
-        $catId = $req['category_id'];
-        $catName = $req['category_name'];
+        $form_categoryId = $req['category_id']; //: cannot be changed in form.
+        $form_categoryName = $req['category_name']; //: can be changed in form.
 
-        $validation = (strlen($catName) <= 100);
+        $categoryToUpdate = Category::select("id", "name", "slug")->find(id:$form_categoryId);
+        $currentSlug = $categoryToUpdate['slug'];
+
+        $validation = (strlen($form_categoryName) <= 100) && ($categoryToUpdate['name'] != $form_categoryName);
 
         if ($validation)
         {
-            $catToUpdate = Category::select("id", "name", "slug")->find(id:$catId);
+            $posOfNumInSlug = strrpos($currentSlug, "-");
+            $currentSlugWithoutLastDashAndNumber = substr($currentSlug, 0, $posOfNumInSlug);
 
-            $catSlug = Str::slug($catName);
-            $slugCount = Category::where("slug", "like", $catSlug . "%")->where("slug", "!=", $catToUpdate['slug'])->get()->count();
-            $slugId = ($slugCount ?? 0) + 1;
-            $catSlug = $catSlug . "-" . $slugId;
+            $newSlugWithoutNumber = Str::slug($form_categoryName);
 
-            $updateResult = ($catToUpdate->update([
-                "name" => $catName,
-                "slug" => $catSlug
+            if ($currentSlugWithoutLastDashAndNumber != $newSlugWithoutNumber)
+            {
+                $i = 1;
+                do
+                {
+                    $categoryNewSlug = $newSlugWithoutNumber . "-" . $i;
+                    $i++;
+
+                    $count = Category::where("slug", "=", $categoryNewSlug)->get()->count();
+                }
+                while( $count != 0 );
+            }
+            else
+            {
+                $categoryNewSlug = $currentSlug; //: do not change slug if string generated from current category name is equal to current slug in DB without number.
+            }
+
+            $updateResult = ($categoryToUpdate->update([
+                "name" => $form_categoryName,
+                "slug" => $categoryNewSlug
             ]));
         }
         else
         {
-            $catSlug = $req['category_slug'];
+            $categoryNewSlug = $currentSlug;
             $updateResult = false;
         }
 
@@ -79,16 +94,28 @@ class CategoryEditController extends Controller
         {
             $categoryEditResult = [
                 "category_edit_result" => "danger",
-                "category_edit_result_msg" => (!$validation) ? "Category could not be updated, length of category name is " . strlen($catName) . ", maximum is 100." : "Category could not be updated."
+                "category_edit_result_msg" => (!$validation) ? "Category could not be updated, category name is too long (current length: " . strlen($form_categoryName) . ", max 100 characters) or is unchanged." : "Category could not be updated."
             ];
         }
 
         return view("category-edit", [
-            "category_id" => $catId,
-            "category_name" => $catName,
-            "category_slug" => $catSlug,
+            "category_id" => $form_categoryId,
+            "category_name" => $form_categoryName,
+            "category_slug" => $categoryNewSlug,
             "category_edit_result" => $categoryEditResult['category_edit_result'],
             "category_edit_result_msg" => $categoryEditResult['category_edit_result_msg']
+        ]);
+    }
+
+    /**
+     * Category editing - Not specified category to edit.
+     * @return RedirectResponse
+     */
+    public function editCategoryNotSpecified(): RedirectResponse
+    {
+        return redirect(route("categories"))->with([
+            "category_deletion_msg" => "Specified category does not exist or cannot be edited.",
+            "category_deletion_result" => "danger"
         ]);
     }
 }

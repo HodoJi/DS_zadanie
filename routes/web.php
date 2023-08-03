@@ -51,6 +51,11 @@ Route::group(["middleware" => 'auth:sanctum'], function()
     // Categories - Edit:
     Route::name('edit-category')->get("/edit-category/{identifier}", [\App\Http\Controllers\CategoryEditController::class, "editCategory"]);
     Route::name('edit-category-save')->post("/edit-category", [\App\Http\Controllers\CategoryEditController::class, "editCategorySave"]);
+    Route::get("/edit-category", [\App\Http\Controllers\CategoryEditController::class, "editCategoryNotSpecified"]);
+
+    // Categories - Add:
+    Route::name("add-category")->get("/add-category", [\App\Http\Controllers\CategoryAddController::class, "addCategory"]);
+    Route::name("add-category-insert")->post("/add-category", [\App\Http\Controllers\CategoryAddController::class, "addCategoryInsert"]);
 
     // Products:
     Route::name('products')->get("/products", [\App\Http\Controllers\API\ProductController::class, "getProductsForView"]);
@@ -59,4 +64,8 @@ Route::group(["middleware" => 'auth:sanctum'], function()
     // Products - Edit:
     Route::name('edit-product')->get("/edit-product/{identifier}", [\App\Http\Controllers\ProductEditController::class, "editProduct"]);
     Route::name('edit-product-save')->post("/edit-product", [\App\Http\Controllers\ProductEditController::class, "editProductSave"]);
+    Route::get("/edit-product", [\App\Http\Controllers\ProductEditController::class, "editProductNotSpecified"]);
+    // Products - Add:
+    Route::name("add-product")->get("/add-product", [\App\Http\Controllers\ProductAddController::class, "addProduct"]);
+    Route::name("add-product-insert")->post("/add-product", [\App\Http\Controllers\ProductAddController::class, "addProductInsert"]);
 });
