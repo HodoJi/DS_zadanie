@@ -48,7 +48,7 @@
                                     <div class="d-flex justify-content-center align-items-center mb-4">
                                         <h2 class="me-3 ff-secondary mb-0">{{ $num_categoriesAndProducts }}</h2>
                                         <div>
-                                            <p class="text-muted mb-0">Categories &amp; Products</p>
+                                            <p class="text-muted mb-0">Categories + Products</p>
                                         </div>
                                     </div>
 
@@ -104,7 +104,7 @@
 
 <script type="module">
     let options = {
-        series:[{{ $num_categories }},{{ $num_products }}], {{-- todo: get values from DB as [num of categories,num of products] --}}
+        series:[{{ $num_categories }},{{ $num_products }}],
         labels:[
             "Categories",
             "Products"

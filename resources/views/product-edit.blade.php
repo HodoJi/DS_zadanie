@@ -55,18 +55,19 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="product_cost">Product Cost</label>
-                                        <span class="form-control">
-                                            <input class="form-control" id="product_cost" name="product_cost" type="number" value="{{ $product_cost }}" min="0">€
-                                        </span>
+                                        <div class="input-group">
+                                            <input class="form-control" id="product_cost" name="product_cost" type="number" value="{{ $product_cost }}" data-original-value="{{ $product_cost }}" min="0">
+                                            <span class="input-group-text">€</span>
+                                        </div>
                                         <div class="form-text">Product cost must be 0 or higher.</div>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label" for="product_category">Product Category</label>
-                                        <select id="product_category" name="product_category">
-                                            <option value="{{ null }}" selected>Uncategorized</option>
-{{--                                            @foreach($categories as $category)--}}
-{{--                                            <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>--}}
-{{--                                            @endforeach--}}
+                                        <label class="form-label" for="product_category_id">Product Category</label>
+                                        <select class="form-select" id="product_category_id" name="product_category_id">
+                                            <option class="fst-italic" value="{{ null }}" @if( $product_category_id == null ) selected @endif>Uncategorized</option>
+                                            @foreach($categories as $category)
+                                            <option value="{{ $category['id'] }}" @if( $product_category_id == $category['id'] ) selected @endif>{{ $category['name'] }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
 
@@ -107,6 +108,22 @@
 
 <!-- JAVASCRIPT -->
 @include('includes/javascript')
+
+<script type="text/javascript">
+    let jq = jQuery.noConflict();
+    jq('#product_cost').on("keydown keyup", function(){
+        let original_val = jq('#product_cost').data("original-value");
+        let regex = /^(\d+|\d+[.,]\d|\d+[.,]\d{2})$/;
+
+        if (this.value.length !== 0)
+        {
+            if (!regex.test(this.value))
+            {
+                this.value = original_val;
+            }
+        }
+    });
+</script>
 
 </body>
 
