@@ -53,6 +53,7 @@
                                         <label class="form-label" for="category_slug">Category Slug</label>
                                         <input class="form-control" id="category_slug" name="category_slug" type="text" value="{{ $category_slug }}" style="cursor: not-allowed" readonly>
                                         <div class="form-text">Slug is auto-generated from category name, cannot be edited manually.</div>
+                                        <div class="form-text">Original slug is shown above.</div>
                                     </div>
 
                                     <input class="btn btn-primary" type="submit" value="Save">
