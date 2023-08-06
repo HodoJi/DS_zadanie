@@ -25,7 +25,7 @@ docker run --rm \
 
 9. in same terminal run "php artisan key:generate"
 
-10. open http://localhost/ and log in (default user email: admin@admin.admin; password: admin)
+10. open http://localhost/ and log in (default user email: admin<span>@</span>admin.admin; password: admin)
 
 # Available API endpoints
 /api/get-categories<br>
