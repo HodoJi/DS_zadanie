@@ -13,3 +13,6 @@
 
 <!-- App js -->
 <script src="{{ asset('assets/js/app.js') }}"></script>
+
+<!-- jQuery -->
+<script src="{{ asset('assets/js/jquery/jquery-3.7.0.min.js') }}"></script>
